@@ -1,0 +1,19 @@
+{
+  "name": "grok_typescript",
+  "version": "0.0.1",
+  "description": "grok project in typescript",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "grok_typescript"
+  },
+  "keywords": [
+    "typescript",
+    "webix"
+  ],
+  "author": "Viacheslav Olishevko",
+  "license": "ISC"
+}
