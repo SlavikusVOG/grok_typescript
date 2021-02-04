@@ -1,7 +1,10 @@
-namespace Data{
-    export class DB{
-        constructor(){
+export class DB{
+    constructor(){
             
-        }
+    }
+
+    initdatafile(grok_random: any){
+        
     }
 }
+

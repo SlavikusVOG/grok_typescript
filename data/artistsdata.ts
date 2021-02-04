@@ -1,4 +1,4 @@
-export class ArtistData{
+export class ArtistsData{
     constructor(){
         
     }
