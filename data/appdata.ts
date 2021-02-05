@@ -1,4 +1,4 @@
-import Express from "Express";
+import Express from "express";
 
 import { GroupsData } from "./groupsdata";
 import { ArtistsData } from "./artistsdata";
@@ -20,11 +20,11 @@ export class AppData{
     constructor(app: Express.Express)
     {
         this.groupsData = new GroupsData(app);
-        this.artistsData = new ArtistsData();
-        this.albumsData = new AlbumsData();
-        this.songsData = new SongsData();
-        this.mainData = new MainData();
-        this.listOfRecordsData = new ListOfRecordsData();
-        this.serverUpload = new ServerUpload();
+        this.artistsData = new ArtistsData(app);
+        this.albumsData = new AlbumsData(app);
+        this.songsData = new SongsData(app);
+        this.mainData = new MainData(app);
+        this.listOfRecordsData = new ListOfRecordsData(app);
+        this.serverUpload = new ServerUpload(app);
     }
 }

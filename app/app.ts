@@ -25,11 +25,11 @@ app.use(BodyParser.urlencoded({extended: true}));
 app.use(Cors());
 app.use(Express.static("../public"));
 
-const db = new DB();
+const grok_random = new Grok_Random(app);
 
-const grok_random = new Grok_Random();
+const db = new DB(grok_random);
 
-db.initdatafile(grok_random);
+db.initdatafile();
 
 const appData = new AppData(app)
 

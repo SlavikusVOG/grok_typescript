@@ -1,7 +1,5 @@
 import fs from "fs";
-import { readFile, writeFile } from "fs/promises";
-import Express from "Express";
-import { group } from "console";
+import Express from "express";
 
 export class DBController{
     private readonly app: Express.Express;
@@ -68,6 +66,23 @@ export class DBController{
         });
     }
     //delete record
+    Delete(){
+        this.app.delete(this.urlPath, (req, res) =>{
+            this.ReadFile((data: any)=>{
+                const groupId: string = req.params.id;
+                delete data[groupId];
+                this.WriteFile(JSON.stringify(data),()=>{
+                    res.status(200).send(data);
+                })
+            },true);
+        })
+    }
     
-    
+    Get(){
+        this.app.get(this.urlPath, (req, res)=>{
+            this.ReadFile((data: any)=>{
+                res.send(data);
+            },true);
+        })
+    }
 }
