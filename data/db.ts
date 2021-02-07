@@ -3,7 +3,6 @@ import fs from "fs";
 import { Country } from "./countries.enum";
 import { Style } from "./styles.enum";
 import { Award } from "./awards.enum";
-
 export class DB{
     private readonly dataFile: string = "../data/data.json";
     private readonly grok_random: Grok_Random;
@@ -18,12 +17,15 @@ export class DB{
                 console.log(`${this.dataFile} exists`)
             }else{
                 const zeroPad = (num: number, place: number) => String(num).padStart(place, '0');
-                for(let i: number = 0, count: number = this.grok_random.getRandomInt(10); i < count; i++){
-                    let group: Group = new Group(i,
-                                                `GroupName${i}`,
-                                                this.grok_random.getRandomEnum(Style),
-                                                this.CreateDate(),
-                                                this.grok_random.getRandomEnum(Country));
+                for(let groupIndex: number = 0, count: number = this.grok_random.getRandomInt(10); 
+                    groupIndex < count; 
+                    groupIndex++){
+                    let group: Group = new Group(this.grok_random,
+                                                 groupIndex,
+                                                 `GroupName${groupIndex}`,
+                                                 this.grok_random.getRandomEnum(Style),
+                                                 this.CreateDate(),
+                                                 this.grok_random.getRandomEnum(Country));
                     this.data.push(group);
                 }
                 fs.writeFileSync(this.dataFile,JSON.stringify(this.data));
@@ -51,6 +53,8 @@ export class DB{
 
 }
 
+//TODO: Use maps
+
 class Artist{
     constructor(private id: number,
                 private group: Group,
@@ -58,7 +62,10 @@ class Artist{
                 private groupMemberName: string,
                 private dateOfBirth: Date,
                 private countryOfBirth: Country,
-                private awards: Award[]){}
+                private awards: Award[])
+    {
+        
+    }
 }
 
 class Song{
@@ -81,14 +88,17 @@ class Album{
 }
 
 class Group{
-    constructor(private id: number,
+    constructor(private grok_random: Grok_Random,
+                private groupIndex: number,
                 private groupName: string,
                 private musicStyle: Style,                
                 private groupCreactionDate: Date,
                 private countryOfFoundation: Country,
                 private compositions?: Song[],
                 private artists?: Artist[],
-                private albums?: Album[]){}
-    
+                private albums?: Album[])
+    {
+        
+    }
 }
 
