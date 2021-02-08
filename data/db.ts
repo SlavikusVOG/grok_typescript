@@ -133,17 +133,20 @@ export class DB{
         for(let i = 0, count = groups.length; i < count; i++){
             let albums = this.CreateAlbums();
             for(let album of albums){
-                let dbGroupAlbum = new DBGroupAlbum(this.groups_albums_mapping.length, groups[i].id,album.id)
+                let dbGroupAlbum = new DBGroupAlbum(this.groups_albums_mapping.length, groups[i].id,album.id);
+                this.albums.push(album);
+                this.groups_albums_mapping.push(dbGroupAlbum);
             }
         }
     }
 
     createAlbumsAndSongsMapping(albums: Album[]): void{
-        const zeroPad = (num: number, place: number) => String(num).padStart(place, '0');
         for(let i = 0, count = albums.length; i < count; i++){
             let songs = this.CreateSongs();
             for(let song of songs){
-                let dbGroupAlbum = new DBGroupAlbum(this.groups_albums_mapping.length, albums[i].id,song.id)
+                let dbAlbumSong = new DBAlbumSong(this.albums_songs_mapping.length, albums[i].id,song.id)
+                this.songs.push(song);
+                this.albums_songs_mapping.push(dbAlbumSong);
             }
         }
     }
@@ -174,15 +177,19 @@ class Song{
 }
 
 class Album{
+    private zeroPad = (num: number, place: number) => String(num).padStart(place, '0');
     constructor(
         private _id: number, 
         private release_date: Date,
         private number_of_issued_copies: number,
         private removal_backet: number,
-        private img_src_src?: string
+        private _img_src_src?: string
         ){}
     get id(){
         return this._id;
+    }
+    set img_src_src(albumIndex: number){
+        this._img_src_src = `imgs/img${this.zeroPad(albumIndex, 4)}`
     }
 }
 
