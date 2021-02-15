@@ -19,5 +19,4 @@ export class MultiView{
             this.settings.init()
         ]
     }
-
 }

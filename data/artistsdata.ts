@@ -1,13 +1,13 @@
 import { DBController } from "../controllers/dbcontroller";
+import Express from "express";
+import path from "path";
 
 export class ArtistsData{
-    private readonly app: any;
-    private readonly dataPath = '../data/artists.json';
+    private readonly dataPath = path.resolve(__dirname) + '/data.json';
     private readonly urlPath = '/artists';
     private readonly dbController: DBController;
 
-    constructor(app: any){
-        this.app = app;
-        this.dbController = new DBController(this.app, this.dataPath, this.urlPath);        
+    constructor(app: Express.Express){
+        this.dbController = new DBController(app, this.dataPath, this.urlPath);        
     }
 }

@@ -57,8 +57,8 @@ export class Settings{
                     (<webix.ui.checkbox>webix.$$("settings_view_switch_checkbox")).getValue()
                     
                     if(checkboxValue == "1"){
-                        $$("settings_view_col1").hide();
-                        $$("settings_view_col2").show();
+                        (<webix.ui.layout>webix.$$("settings_view_col1")).hide();
+                        (<webix.ui.layout>webix.$$("settings_view_col2")).show();
                         //$$("fileUploader").hide();
                         //$$("myList").hide();
                         //$$("getValueButton").hide();
@@ -67,8 +67,8 @@ export class Settings{
                     }
 
                     if(checkboxValue == "0"){
-                        $$("settings_view_col1").show();
-                        $$("settings_view_col2").hide();
+                        (<webix.ui.layout>webix.$$("settings_view_col1")).show();
+                        (<webix.ui.layout>webix.$$("settings_view_col2")).hide();
                         //$$("fileUploader").hide();
                         //$$("myList").hide();
                         //$$("getValueButton").hide();

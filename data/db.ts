@@ -1,15 +1,19 @@
 import { Grok_Random } from "./grok_random";
 import fs from "fs";
+import path from "path";
 import { Country } from "./countries.enum";
 import { Style } from "./styles.enum";
 import { Award } from "./awards.enum";
-import { ArtistsData } from "./artistsdata";
+import {JsonDB } from "node-json-db";
+import {JsonDBConfig } from "./JsonDBConfig"
+import { hasUncaughtExceptionCaptureCallback } from "process";
 
 export class DB{
-    private readonly dataFile: string = "../data/data.json";
+    private readonly dataDir: string = path.resolve(__dirname);
+    private readonly dataFile: string = "data.json";
     private readonly grok_random: Grok_Random;
-    private data: [Group[], Artist[], Album[], Song[], DBGroupArtist[], DBGroupAlbum[], DBAlbumSong[]] =
-        [[],[],[],[],[],[],[]];
+    // private data: [Group[], Artist[], Album[], Song[], DBGroupArtist[], DBGroupAlbum[], DBAlbumSong[]] =
+    //      [[],[],[],[],[],[],[]];
     private groups: Group[] = [];
     private artists: Artist[] = [];
     private albums: Album[] = [];
@@ -23,37 +27,37 @@ export class DB{
 
     initdatafile(){
         try{
-            if(fs.existsSync(this.dataFile)){
+            if(fs.existsSync(this.dataDir + '/' + this.dataFile)){
                 console.log(`${this.dataFile} exists`)
             }else{
                 this.groups = this.CreateGroups();
-                // let artists: Artist[] = this.CreateArtists();
-                // let albums: Album[] = this.CreateAlbums();
-                // let songs: Song[] = this.CreateSongs();
                 this.createGroupsAndArtistsMapping(this.groups);
                 this.createGroupsAndAlbumsMapping(this.groups);
                 this.createAlbumsAndSongsMapping(this.albums);
-                this.data = [
-                    this.groups,
-                    this.artists,
-                    this.albums,
-                    this.songs,
-                    this.groups_artists_mapping,
-                    this.groups_albums_mapping,
-                    this.albums_songs_mapping
-                ];
-                fs.writeFileSync(this.dataFile,JSON.stringify(this.data));
+                // this.data = [
+                //     this.groups,
+                //     this.artists,
+                //     this.albums,
+                //     this.songs,
+                //     this.groups_artists_mapping,
+                //     this.groups_albums_mapping,
+                //     this.albums_songs_mapping
+                // ];
+                // if(fs.existsSync(path.resolve(__dirname, this.dataDir))){
+                //     fs.mkdirSync(this.dataDir);
+                // }
+                //  fs.writeFileSync(this.dataDir + '/' + this.dataFile, JSON.stringify(this.data));
             }
         }catch(err){
             throw err;
         }
     }
 
-    CreateDate(): Date{
+    private CreateDate(): Date{
         return new Date();
     }
 
-    CreateGroups(): Group[]
+    private CreateGroups(): Group[]
     {
         let groups : Group[] = [];
         for(let i: number = 0, count: number = this.grok_random.getRandomInt(10); i < count; i++){
@@ -69,7 +73,7 @@ export class DB{
         return groups;
     }
 
-    CreateSongs(): Song[]
+    private CreateSongs(): Song[]
     {
         let songs: Song[] = [];
         for(let i: number = 0, count: number = this.grok_random.getRandomArbitrary(100, 500); i < count; i++){
@@ -81,7 +85,7 @@ export class DB{
         return songs;
     }
 
-    CreateArtists(): Artist[]
+    private CreateArtists(): Artist[]
     {
         let artists: Artist[] = [];
         for(
@@ -103,7 +107,7 @@ export class DB{
         return artists;
     }
 
-    CreateAlbums(): Album[]
+    private CreateAlbums(): Album[]
     {
         let albums: Album[] = [];
         for(let i: number = 0, count: number = this.grok_random.getRandomArbitrary(50, 100); i < count; i++){
@@ -118,7 +122,7 @@ export class DB{
         return albums;
     }
 
-    createGroupsAndArtistsMapping(groups: Group[]): void{
+    private createGroupsAndArtistsMapping(groups: Group[]): void{
         for(let i = 0, count = groups.length; i < count; i++){
             let artists = this.CreateArtists();
             for(let artist of artists){
@@ -129,7 +133,7 @@ export class DB{
         }
     }
 
-    createGroupsAndAlbumsMapping(groups: Group[]): void{
+    private createGroupsAndAlbumsMapping(groups: Group[]): void{
         for(let i = 0, count = groups.length; i < count; i++){
             let albums = this.CreateAlbums();
             for(let album of albums){
@@ -140,7 +144,7 @@ export class DB{
         }
     }
 
-    createAlbumsAndSongsMapping(albums: Album[]): void{
+    private createAlbumsAndSongsMapping(albums: Album[]): void{
         for(let i = 0, count = albums.length; i < count; i++){
             let songs = this.CreateSongs();
             for(let song of songs){
@@ -150,9 +154,41 @@ export class DB{
             }
         }
     }
+
+    private checkDBGroups(dbPath: string): void{
+        const jsondb = new JsonDB(dbPath, true, true);
+        fs.access(Group.dbPath + ".json", fs.constants.R_OK, function (err) {
+            throw err;
+        })
+    }
+
+    private checkDBArtists(): void{
+        
+    }
+
+    private checkDBAlbums(): void{
+        
+    }
+
+    private checkDBSongs(): void{
+        
+    }
+
+    private checkDBGroupArtists(): void{
+        
+    }
+
+    private checkDBGroupAlbums(): void{
+        
+    }
+
+    private checkDBAlbumSongs(): void{
+        
+    }
 }
 
 class Artist{
+    static readonly dbPath: string = path.resolve(__dirname, "artists");
     constructor(
         private _id: number,
         private roleInTheGroup: string,
@@ -167,6 +203,7 @@ class Artist{
 }
 
 class Song{
+    static readonly dbPath: string = path.resolve(__dirname, "songs");
     constructor(
         private _id: number, 
         private name: string
@@ -177,6 +214,7 @@ class Song{
 }
 
 class Album{
+    static readonly dbPath: string = path.resolve(__dirname, "albums");
     private zeroPad = (num: number, place: number) => String(num).padStart(place, '0');
     constructor(
         private _id: number, 
@@ -194,6 +232,7 @@ class Album{
 }
 
 class Group{
+    static readonly dbPath: string = path.resolve(__dirname, "groups");
     constructor(
         private _id: number,
         private groupName: string,
@@ -207,6 +246,7 @@ class Group{
 }
 
 class DBGroupArtist{
+    static readonly dbPath: string = path.resolve(__dirname, "dbgroupartist");
     constructor(
         private id: number,
         private groupIndex: number,
@@ -215,6 +255,7 @@ class DBGroupArtist{
 }
 
 class DBGroupAlbum{
+    static readonly dbPath: string = path.resolve(__dirname, "dbgroupalbum");
     constructor(
         private id: number,
         private groupIndex: number,
@@ -223,6 +264,7 @@ class DBGroupAlbum{
 }
 
 class DBAlbumSong{
+    static readonly dbPath: string = path.resolve(__dirname, "albumsong");
     constructor(
         private id: number,
         private albumIndex: number,

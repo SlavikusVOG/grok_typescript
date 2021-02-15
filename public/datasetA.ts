@@ -26,7 +26,7 @@ export class DatasetA{
             //after select row display form with data for edit
             onAfterSelect: function (selection, preserve) {
                 webix.ui(this.popup).show();
-                $$("editdata_form").bind($$("datasetA_datatable"));
+                (<webix.ui.form>webix.$$("editdata_form")).bind((<webix.ui.datatable>webix.$$("datasetA_datatable")));
             }
         },
 
@@ -66,7 +66,7 @@ export class DatasetA{
                 view: "button",
                 label: "Export to Excel",
                 click: function(){
-                    webix.toExcel($$("datasetA_datatable"));
+                    webix.toExcel((<webix.ui.datatable>webix.$$("datasetA_datatable")));
                 }
             },
             {
