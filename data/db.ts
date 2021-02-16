@@ -1,11 +1,18 @@
 import { Grok_Random } from "./grok_random";
 import * as fs from "fs";
 import * as path from "path";
-import { Country } from "./countries.enum";
-import { Style } from "./styles.enum";
-import { Award } from "./awards.enum";
+import { Country } from "./Entities/countries.enum";
+import { Style } from "./Entities/styles.enum";
+import { Award } from "./Entities/awards.enum";
 import { JsonDB } from "node-json-db";
-import { Config } from "node-json-db/dist/lib/JsonDBConfig"
+import { Config } from "node-json-db/dist/lib/JsonDBConfig";
+import { DBAlbumSong } from "./Entities/DBAlbumSong";
+import { DBGroupAlbum } from "./Entities/DBGroupAlbum";
+import { DBGroupArtist } from "./Entities/DBGroupArtist";
+import { Group } from "./Entities/Group";
+import { Album } from "./Entities/Album";
+import { Artist } from "./Entities/Artist";
+import { Song } from "./Entities/Song";
 
 export class DB{
     private readonly dataDir: string = path.resolve(__dirname);
@@ -116,7 +123,8 @@ export class DB{
                 this.CreateDate(),
                 this.grok_random.getRandomArbitrary(1000, 1000000),
                 this.grok_random.getRandomInt(10),
-                songsCount
+                songsCount,
+                this.grok_random.getRandomEnum(Award)
             )
             album.img_src_src = i
             this.createAlbumsAndSongsMapping(album, songs);
@@ -153,90 +161,4 @@ export class DB{
             jsondb.push(filename, objs);
         }      
     }
-}
-
-class Artist{
-    static readonly dbPath: string = path.resolve(__dirname, "artists");
-    constructor(
-        private _id: number,
-        private roleInTheGroup: string,
-        private artistName: string,
-        private dateOfBirth: Date,
-        private countryOfBirth: Country,
-        private award: Award
-        ){}
-    get id(): number{
-        return this._id;
-    }
-}
-
-class Song{
-    static readonly dbPath: string = path.resolve(__dirname, "songs");
-    constructor(
-        private _id: number, 
-        private name: string
-        ){}
-    get id(): number{
-        return this._id
-    }
-}
-
-class Album{
-    static readonly dbPath: string = path.resolve(__dirname, "albums");
-    private zeroPad = (num: number, place: number) => String(num).padStart(place, '0');
-    constructor(
-        private _id: number, 
-        private release_date: Date,
-        private number_of_issued_copies: number,
-        private removal_backet: number,
-        private number_of_songs: number,
-        private _img_src_src?: string
-        ){}
-    get id(){
-        return this._id;
-    }
-    set img_src_src(albumIndex: number){
-        this._img_src_src = `imgs/img${this.zeroPad(albumIndex, 4)}`
-    }
-}
-
-class Group{
-    static readonly dbPath: string = path.resolve(__dirname, "groups");
-    constructor(
-        private _id: number,
-        private groupName: string,
-        private musicStyle: Style,                
-        private groupCreactionDate: Date,
-        private countryOfFoundation: Country
-        ){}   
-    get id(){
-        return this._id;
-    }
-}
-
-class DBGroupArtist{
-    static readonly dbPath: string = path.resolve(__dirname, "dbgroupartist");
-    constructor(
-        private id: number,
-        private groupIndex: number,
-        private artistsIndex: number
-        ){}
-}
-
-class DBGroupAlbum{
-    static readonly dbPath: string = path.resolve(__dirname, "dbgroupalbum");
-    constructor(
-        private id: number,
-        private groupIndex: number,
-        private albumIndex: number
-        ){}
-}
-
-class DBAlbumSong{
-    static readonly dbPath: string = path.resolve(__dirname, "albumsong");
-    constructor(
-        private id: number,
-        private albumIndex: number,
-        private songIndex: number
-        ){}
 }
