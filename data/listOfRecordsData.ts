@@ -15,8 +15,8 @@ import { Award } from "./Entities/awards.enum";
 export class ListOfRecordsData{
     private readonly urlPath: string = '/listOfRecords';
     private readonly controller: DataController;
+    private readonly bindedData: BindedData[] = [];
     constructor(app: Express.Express){
-        let bindedData: BindedData[] = [];
         const groupDB = new DB(Group.dbPath);
         const albumDB = new DB(Album.dbPath);
         const artistDB = new DB(Artist.dbPath);
@@ -34,24 +34,45 @@ export class ListOfRecordsData{
         let groupartistsdata: DBGroupArtist[] = groupArtistsDB.getData(DBGroupArtist.dbPath);
 
         for(let album of albumsdata){
-            let groupName: string;
+            let groupName: string = "";
             for(let data of groupalbumsdata){
                 if(album.id == data.albumId){
-                    let groupId = {id: data.groupId};
+                    let groupIndex = groupsdata.findIndex((element: Group, index: number, groups: Group[])=>{
+                        if(data.groupId == element.id){
+                            return true;
+                        }
+                    });
+                    if(groupIndex > -1){
+                        groupName = groupsdata[groupIndex].name;
+                        break;
+                    }          
                 }
             }
-            let data = new BindedData(
+            let songNames: string[] = [];
+            for(let data of albumsongsdata){
+                if(album.id == data.albumId){
+                    let songIndex = songsdata.findIndex((element: Song, index: number, songs: Song[])=>{
+                        if(data.songId == element.id){
+                            return true;
+                        }
+                    });
+                    if(songIndex > -1){
+                        songNames.push(songsdata[songIndex].name);
+                    }
+                }
+            }
+            this.bindedData.push(new BindedData(
                 album.id,
                 album.img_src_src,
-                "groupName",
-                "albumTitle",
-                [Award.ARIA],
-                ["songsName"]                
-            )
+                groupName,
+                album.albumName,
+                album.awards || [],
+                songNames || []              
+            )) 
         }
 
-        this.controller = new DataController(app, bindedData, this.urlPath);
-    }    
+        this.controller = new DataController(app, this.bindedData, this.urlPath);
+    }
 }
 
 class DB<T> extends JsonDB{

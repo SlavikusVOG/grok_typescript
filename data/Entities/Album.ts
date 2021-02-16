@@ -6,11 +6,12 @@ export class Album{
     private zeroPad = (num: number, place: number) => String(num).padStart(place, '0');
     constructor(
         private _id: number, 
+        private _albumName: string,
         private release_date: Date,
         private number_of_issued_copies: number,
         private removal_backet: number,
         private number_of_songs: number,
-        private awards?: Award[],
+        private _awards?: Award[],
         private _img_src_src?: string
         ){}
     get id(){
@@ -22,5 +23,13 @@ export class Album{
 
     get img_src_src(){
         return this._img_src_src;
+    }
+
+    get albumName(){
+        return this._albumName;
+    }
+
+    get awards(){
+        return this._awards;
     }
 }

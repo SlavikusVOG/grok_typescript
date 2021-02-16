@@ -120,7 +120,8 @@ export class DB{
             let songsCount: number = songs.length;
             let album: Album = new Album(
                 i,
-                this.CreateDate(),
+                `AlbumName${i}`,
+                this.CreateDate(),               
                 this.grok_random.getRandomArbitrary(1000, 1000000),
                 this.grok_random.getRandomInt(10),
                 songsCount,
