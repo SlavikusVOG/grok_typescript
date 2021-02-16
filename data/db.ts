@@ -16,7 +16,6 @@ import { Song } from "./Entities/Song";
 
 export class DB{
     private readonly dataDir: string = path.resolve(__dirname);
-    private readonly dataFile: string = "data.json";
     private readonly grok_random: Grok_Random;
     private groups: Group[] = [];
     private artists: Artist[] = [];
@@ -31,9 +30,10 @@ export class DB{
 
     initdatafile(){
         try{
-            if(fs.existsSync(this.dataDir + '/' + this.dataFile)){
-                console.log(`${this.dataFile} exists`)
+            if(fs.existsSync(Group.dbPath +  '.json')){
+                console.log(`files exist`)
             }else{
+                console.log(`generating files...`)
                 this.CreateData();
                 this.insertDataToDB<Group>(Group.dbPath, this.groups);
                 this.insertDataToDB<Album>(Album.dbPath, this.albums)
@@ -160,6 +160,7 @@ export class DB{
         const jsondb = new JsonDB(new Config(filename, true, true));
         for(let obj of objs){
             jsondb.push(filename, objs);
-        }      
+        } 
+        console.log(`${filename} created`);
     }
 }
