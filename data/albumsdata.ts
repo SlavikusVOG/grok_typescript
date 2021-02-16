@@ -1,6 +1,6 @@
 import { DBController } from "../controllers/dbcontroller";
 import Express from "express";
-import path from "path";
+import * as path from "path";
 
 export class AlbumsData{
     private readonly dataPath = path.resolve(__dirname) + '/data.json';

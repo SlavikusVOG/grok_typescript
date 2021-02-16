@@ -1,4 +1,4 @@
-import Path from 'path'
+import * as path from 'path'
 import BodyParser from 'body-parser';
 import FileUpload from 'express-fileupload';
 import Cors from 'cors';
@@ -23,7 +23,7 @@ app.use(FileUpload({
 app.use(BodyParser.json());
 app.use(BodyParser.urlencoded({extended: true}));
 app.use(Cors());
-app.use(Express.static(Path.resolve(__dirname, "../public")));
+app.use(Express.static(path.resolve(__dirname, "../public")));
 
 const grok_random = new Grok_Random(app);
 
