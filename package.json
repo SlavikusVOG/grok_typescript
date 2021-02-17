@@ -4,10 +4,13 @@
   "description": "grok project in typescript",
   "main": "app.js",
   "scripts": {
+    "clean": "rm -rf ./node_modules package-lock.json && npm install",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --config webpack.config.js",
-    "tscbuild": "tsc --watch",
-    "node": "node dist/app/app.js"
+    "buildwebpack": "webpack --config webpack.config.js",
+    "buildserver": "tsc -p tsconfig.server.json",
+    "build": "tsc -p tsconfig.server.json && webpack --config webpack.config.js",
+    "start": "node dist/app/app.js",
+    "cleandist": "rm -rf ./dist"
   },
   "repository": {
     "type": "git",
@@ -23,6 +26,7 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "fs": "0.0.1-security",
+    "html-webpack-plugin": "^5.1.0",
     "node-json-db": "^1.1.0",
     "ts-loader": "^8.0.17",
     "ts-node": "^9.1.1",
