@@ -1,5 +1,5 @@
-import * as webix from "../libs/webix/codebase/types/webix"
-import { MultiView } from "./multiView"
+import * as webix from "../libs/webix/codebase/types/webix";
+import { MultiView } from "./multiView";
 
 export class Menu{
     private readonly data: any = [

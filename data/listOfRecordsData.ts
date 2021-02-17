@@ -1,6 +1,5 @@
 import { DataController } from "../controllers/datacontroller";
 import Express from "express";
-import * as path from "path";
 import { Group } from "./Entities/Group";
 import { Album } from "./Entities/Album";
 import { Song } from "./Entities/Song";
@@ -17,13 +16,13 @@ export class ListOfRecordsData{
     private readonly controller: DataController;
     private readonly bindedData: BindedData[] = [];
     constructor(app: Express.Express){
-        const groupDB = new DB(Group.dbPath);
-        const albumDB = new DB(Album.dbPath);
-        const artistDB = new DB(Artist.dbPath);
-        const songDB = new DB(Song.dbPath);
-        const albumSongsDB = new DB(DBAlbumSong.dbPath);
-        const groupAlbumsDB = new DB(DBGroupAlbum.dbPath);
-        const groupArtistsDB = new DB(DBGroupArtist.dbPath);
+        const groupDB = new DB<Group>(Group.dbPath);
+        const albumDB = new DB<Album>(Album.dbPath);
+        const artistDB = new DB<Artist>(Artist.dbPath);
+        const songDB = new DB<Song>(Song.dbPath);
+        const albumSongsDB = new DB<DBAlbumSong>(DBAlbumSong.dbPath);
+        const groupAlbumsDB = new DB<DBGroupAlbum>(DBGroupAlbum.dbPath);
+        const groupArtistsDB = new DB<DBGroupArtist>(DBGroupArtist.dbPath);
 
         let songsdata: Song[] = songDB.getData(Song.dbPath);
         let albumsdata: Album[] = albumDB.getData(Album.dbPath);

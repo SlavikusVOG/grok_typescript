@@ -1,4 +1,4 @@
-import * as webix from "../libs/webix/codebase/types/webix"
+import * as webix from "../libs/webix/codebase/types/webix";
 
 export class DatasetA{
 

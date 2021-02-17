@@ -13,6 +13,7 @@ class ClientApp {
     // private readonly listOfRecords = new ListOfRecords();
     // private readonly settings = new Settings();
     private readonly multiView = new MultiView();
+
     init(): void{
         const mainSidebar: webix.ui.sidebar = this.menu.createSideBar();
     }
