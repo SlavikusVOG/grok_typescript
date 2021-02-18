@@ -1,4 +1,4 @@
-import * as webix from "../libs/webix/types/webix";
+//import * as webix from "../libs/webix/types/webix";
 
 import { MultiView } from "./multiView";
 
