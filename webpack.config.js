@@ -1,6 +1,6 @@
 const path = require('path');
-const webpackNodeExternals = require('webpack-node-externals');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = [
     {
@@ -8,9 +8,18 @@ module.exports = [
         entry: './public/clientapp.ts',
         plugins:[
             new HTMLWebpackPlugin(),
+            new CopyWebpackPlugin(
+                {patterns: [
+                    {
+                        from: path.resolve(__dirname, 'libs/'),
+                        to: path.resolve(__dirname, 'dist/libs/')
+                    }
+                ]}
+            ),
         ],
         resolve: {
             extensions: ['.ts', '.js'],
+            modules: ["./public", "node_modules", "./libs"]
         },
         output: {
             path: path.resolve(__dirname, 'dist/public'),
