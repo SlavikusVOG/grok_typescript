@@ -1,4 +1,5 @@
-import * as webix from "../libs/webix/codebase/types/webix";
+import * as webix from "../libs/webix/types/webix";
+
 import { MultiView } from "./multiView";
 
 export class Menu{

@@ -1,4 +1,5 @@
-import * as webix from "../libs/webix/codebase/types/webix";
+import * as webix from "../libs/webix/types/webix";
+
 import { DatasetA } from "./datasetA";
 import { DatasetB } from "./datasetB";
 import { ListOfRecords } from "./listOfRecords";
@@ -18,5 +19,9 @@ export class MultiView{
             this.listOfRecords.getView(),
             this.settings.init()
         ]
+    }
+
+    createMultiView(): webix.ui.multiview{
+        return <webix.ui.multiview> webix.ui(this.mainMultiviewConfig);
     }
 }

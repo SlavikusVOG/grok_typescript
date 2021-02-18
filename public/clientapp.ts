@@ -1,9 +1,10 @@
-import * as webix from "../libs/webix/codebase/types/webix";
+import * as webix from "../libs/webix/types/webix";
+
 import { Menu } from "./menu";
-import { DatasetA } from "./datasetA";
-import { DatasetB } from "./datasetB";
-import { ListOfRecords } from "./listOfRecords";
-import { Settings } from "./settings";
+// import { DatasetA } from "./datasetA";
+// import { DatasetB } from "./datasetB";
+// import { ListOfRecords } from "./listOfRecords";
+// import { Settings } from "./settings";
 import { MultiView } from "./multiView";
 
 class ClientApp {
@@ -16,6 +17,7 @@ class ClientApp {
 
     init(): void{
         const mainSidebar: webix.ui.sidebar = this.menu.createSideBar();
+        const mainMultiView: webix.ui.multiview = this.multiView.createMultiView();
     }
 }
 

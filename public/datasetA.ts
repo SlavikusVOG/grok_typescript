@@ -1,15 +1,6 @@
-import * as webix from "../libs/webix/codebase/types/webix";
+import * as webix from "../libs/webix/types/webix";
 
 export class DatasetA{
-
-    // private readonly editdataForm: webix.ui.form; //
-
-    // private readonly toolbar: webix.ui.toolbar //
-
-    // private readonly layout: webix.ui.layout //
-
-    // private readonly datatable: webix.ui.datatable //
-
     private readonly datatableConfig: webix.ui.datatableConfig = {
         id: "datasetA_datatable",
         view: "datatable",
