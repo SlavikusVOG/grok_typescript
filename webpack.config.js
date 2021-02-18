@@ -22,7 +22,7 @@ module.exports = [
             modules: ["./public", "node_modules", "./libs"]
         },
         output: {
-            path: path.resolve(__dirname, 'dist/public'),
+            path: path.resolve(__dirname, 'dist'),
             filename: 'clientapp.bundle.js',
         },
         module: {
