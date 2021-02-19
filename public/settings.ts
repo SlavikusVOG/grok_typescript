@@ -1,5 +1,7 @@
 //import * as webix from "../libs/webix/types/webix";
 
+import webix from "webix";
+
 export class Settings{
     private readonly formConfig: webix.ui.formConfig = {
         view:"form",

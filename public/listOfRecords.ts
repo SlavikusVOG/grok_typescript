@@ -1,5 +1,7 @@
 //import * as webix from "../libs/webix/types/webix";
 
+import webix from "webix";
+
 export class ListOfRecords {
     private readonly albumsDataConfig: webix.DataCollectionConfig = {
         url: "http://localhost:3000/albums"

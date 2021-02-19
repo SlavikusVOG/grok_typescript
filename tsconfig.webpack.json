@@ -74,8 +74,15 @@
     "types":[
       "libs/webix/types/webix.d.ts"
     ],
-    "files": [
-      "libs/webix/types/webix.d.ts",
-      "public/**/*.ts"
-    ]
+    // "files": [
+    //   "libs/webix/types/webix.d.ts",
+    //   "public/*.ts",
+      // "public/clientapp.ts",
+      // "public/datasetA.ts",
+      // "public/datasetB.ts",
+      // "public/listOfRecords.ts",
+      // "public/menu.ts",
+      // "public/multiView.ts",
+      // "public/settings.ts"
+    // ]
   }

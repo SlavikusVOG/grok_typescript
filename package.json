@@ -2,7 +2,8 @@
   "name": "grok_typescript",
   "version": "0.0.1",
   "description": "grok project in typescript",
-  "main": "app.js",
+  "main": "dist/app/app.js",
+  "types": "dist/libs/webix/types/webix.d.ts",
   "scripts": {
     "clean": "rm -rf ./node_modules package-lock.json && npm install",
     "test": "echo \"Error: no test specified\" && exit 1",

@@ -1,5 +1,6 @@
 //import * as webix from "../libs/webix/types/webix";
 
+import webix from "webix";
 import { DatasetA } from "./datasetA";
 import { DatasetB } from "./datasetB";
 import { ListOfRecords } from "./listOfRecords";

@@ -1,5 +1,7 @@
 //import * as webix from "../libs/webix/types/webix";
 
+import webix from "webix";
+
 export class DatasetA{
     private readonly datatableConfig: webix.ui.datatableConfig = {
         id: "datasetA_datatable",
