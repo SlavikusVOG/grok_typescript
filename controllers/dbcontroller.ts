@@ -1,4 +1,4 @@
-import fs from "fs";
+import * as fs from "fs";
 import Express from "express";
 
 export class DBController{
@@ -10,6 +10,43 @@ export class DBController{
         this.app = app;
         this.dataPath = dataPath;
         this.urlPath = urlPath;
+        app.post(this.urlPath, (req, res)=>{
+            this.ReadFile((data: any)=>{
+                const NewGroupId = Object.keys(data).length + 1;
+
+                data[NewGroupId] = req.body.id;
+
+                this.WriteFile(JSON.stringify(data), ()=>{
+                    res.status(200).send(data);
+                });
+            }, true);
+        });
+
+        app.put(this.urlPath, (req, res)=>{
+            this.ReadFile((data: any)=>{
+                const groupId: string = req.params.id;//TODO: find issue for this situation
+                data[groupId] = req.body;
+                this.WriteFile(JSON.stringify(data), ()=>{
+                    res.status(200).send(data);
+                });
+            }, true);
+        });
+
+        app.delete(this.urlPath, (req, res) =>{
+            this.ReadFile((data: any)=>{
+                const groupId: string = req.params.id;
+                delete data[groupId];
+                this.WriteFile(JSON.stringify(data),()=>{
+                    res.status(200).send(data);
+                })
+            },true);
+        })
+
+        this.app.get(this.urlPath, (req, res)=>{
+            this.ReadFile((data: any)=>{
+                res.send(data);
+            },true);
+        })
     }
 
     private ReadFile(
@@ -37,52 +74,6 @@ export class DBController{
                 throw err;
             }
             callback();
-        })
-    }
-    //create new record
-    Post(): void{
-        this.app.post(this.urlPath, (req, res)=>{
-            this.ReadFile((data: any)=>{
-                const NewGroupId = Object.keys(data).length + 1;
-
-                data[NewGroupId] = req.body.id;
-
-                this.WriteFile(JSON.stringify(data), ()=>{
-                    res.status(200).send(data);
-                });
-            }, true);
-        });
-    }
-    //update record
-    Put(){
-        this.app.put(this.urlPath, (req, res)=>{
-            this.ReadFile((data: any)=>{
-                const groupId: string = req.params.id;//TODO: find issue for this situation
-                data[groupId] = req.body;
-                this.WriteFile(JSON.stringify(data), ()=>{
-                    res.status(200).send(data);
-                });
-            }, true);
-        });
-    }
-    //delete record
-    Delete(){
-        this.app.delete(this.urlPath, (req, res) =>{
-            this.ReadFile((data: any)=>{
-                const groupId: string = req.params.id;
-                delete data[groupId];
-                this.WriteFile(JSON.stringify(data),()=>{
-                    res.status(200).send(data);
-                })
-            },true);
-        })
-    }
-    
-    Get(){
-        this.app.get(this.urlPath, (req, res)=>{
-            this.ReadFile((data: any)=>{
-                res.send(data);
-            },true);
         })
     }
 }

@@ -1,15 +1,15 @@
-import Path from 'path'
+import * as path from 'path'
 import BodyParser from 'body-parser';
 import FileUpload from 'express-fileupload';
 import Cors from 'cors';
 import Express from 'express';
-import fs from 'fs';
 
 import { DB } from "../data/db";
 import { Grok_Random } from "../data/grok_random";
 import { AppData } from "../data/appdata";
 
 const app = Express();
+const PORT: number = 3000;
 // const PORT: number = 8000;
 // app.get('/', (req, res) => res.send('Express + Typescript server'));
 // app.listen(PORT, ()=>{
@@ -23,7 +23,8 @@ app.use(FileUpload({
 app.use(BodyParser.json());
 app.use(BodyParser.urlencoded({extended: true}));
 app.use(Cors());
-app.use(Express.static("../public"));
+app.use(Express.static(path.resolve(__dirname, "../public")));
+app.use(Express.static(path.resolve(__dirname, "../libs/webix/")));
 
 const grok_random = new Grok_Random(app);
 
@@ -33,6 +34,10 @@ db.initdatafile();
 
 const appData = new AppData(app)
 
-const server = app.listen(3000, ()=>{
-    console.log(`listening on port %s...`, server.address());
-})
+app.get( "/", ( req, res ) => {
+    res.send( "Server started" );
+} );
+
+app.listen(PORT, () => {
+    console.log(`server started at http://localhost: ${PORT}`);
+});

@@ -1,9 +1,11 @@
-export class DataController{
-    private readonly app: any;
-    private readonly data: any;
-    private readonly urlPath: any;
+import * as Express from "express";
 
-    constructor(app: any, data: any, urlPath: any){
+export class DataController{
+    private readonly app: Express.Express;
+    private readonly data: any;
+    private readonly urlPath: string;
+
+    constructor(app: Express.Express, data: any, urlPath: string){
         this.app = app;
         this.data = data;
         this.urlPath = urlPath;

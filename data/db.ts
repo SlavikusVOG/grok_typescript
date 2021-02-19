@@ -1,15 +1,22 @@
 import { Grok_Random } from "./grok_random";
-import fs from "fs";
-import { Country } from "./countries.enum";
-import { Style } from "./styles.enum";
-import { Award } from "./awards.enum";
-import { ArtistsData } from "./artistsdata";
+import * as fs from "fs";
+import * as path from "path";
+import { Country } from "./Entities/countries.enum";
+import { Style } from "./Entities/styles.enum";
+import { Award } from "./Entities/awards.enum";
+import { JsonDB } from "node-json-db";
+import { Config } from "node-json-db/dist/lib/JsonDBConfig";
+import { DBAlbumSong } from "./Entities/DBAlbumSong";
+import { DBGroupAlbum } from "./Entities/DBGroupAlbum";
+import { DBGroupArtist } from "./Entities/DBGroupArtist";
+import { Group } from "./Entities/Group";
+import { Album } from "./Entities/Album";
+import { Artist } from "./Entities/Artist";
+import { Song } from "./Entities/Song";
 
 export class DB{
-    private readonly dataFile: string = "../data/data.json";
+    private readonly dataDir: string = path.resolve(__dirname);
     private readonly grok_random: Grok_Random;
-    private data: [Group[], Artist[], Album[], Song[], DBGroupArtist[], DBGroupAlbum[], DBAlbumSong[]] =
-        [[],[],[],[],[],[],[]];
     private groups: Group[] = [];
     private artists: Artist[] = [];
     private albums: Album[] = [];
@@ -23,40 +30,32 @@ export class DB{
 
     initdatafile(){
         try{
-            if(fs.existsSync(this.dataFile)){
-                console.log(`${this.dataFile} exists`)
+            if(fs.existsSync(Group.dbPath +  '.json')){
+                console.log(`files exist`)
             }else{
-                this.groups = this.CreateGroups();
-                // let artists: Artist[] = this.CreateArtists();
-                // let albums: Album[] = this.CreateAlbums();
-                // let songs: Song[] = this.CreateSongs();
-                this.createGroupsAndArtistsMapping(this.groups);
-                this.createGroupsAndAlbumsMapping(this.groups);
-                this.createAlbumsAndSongsMapping(this.albums);
-                this.data = [
-                    this.groups,
-                    this.artists,
-                    this.albums,
-                    this.songs,
-                    this.groups_artists_mapping,
-                    this.groups_albums_mapping,
-                    this.albums_songs_mapping
-                ];
-                fs.writeFileSync(this.dataFile,JSON.stringify(this.data));
+                console.log(`generating files...`)
+                this.CreateData();
+                this.insertDataToDB<Group>(Group.dbPath, this.groups);
+                this.insertDataToDB<Album>(Album.dbPath, this.albums)
+                this.insertDataToDB<Artist>(Artist.dbPath, this.artists)
+                this.insertDataToDB<Song>(Song.dbPath, this.songs)
+                this.insertDataToDB<DBGroupAlbum>(DBGroupAlbum.dbPath, this.groups_albums_mapping)
+                this.insertDataToDB<DBGroupArtist>(DBGroupArtist.dbPath, this.groups_artists_mapping)
+                this.insertDataToDB<DBAlbumSong>(DBAlbumSong.dbPath, this.albums_songs_mapping)
             }
         }catch(err){
             throw err;
         }
     }
 
-    CreateDate(): Date{
+    private CreateDate(): Date{
         return new Date();
     }
 
-    CreateGroups(): Group[]
+    private CreateData(): void
     {
         let groups : Group[] = [];
-        for(let i: number = 0, count: number = this.grok_random.getRandomInt(10); i < count; i++){
+        for(let i: number = this.groups.length, count: number = this.grok_random.getRandomInt(10); i < count; i++){
             let group: Group = new Group(
                 i,
                 `GroupName${i}`,
@@ -64,24 +63,30 @@ export class DB{
                 this.CreateDate(),
                 this.grok_random.getRandomEnum(Country)
                 );
+            let albums: Album[] = this.CreateAlbumsForGroup();
+            this.createGroupAndAlbumsMapping(group, albums);
+            let artists: Artist[] = this.CreateArtistsForGroup();
+            this.createGroupAndArtistsMapping(group, artists);
+            this.groups.push(group)
             groups.push(group);
         }
-        return groups;
     }
 
-    CreateSongs(): Song[]
+    private CreateSongsForAlbum(): Song[]
     {
         let songs: Song[] = [];
-        for(let i: number = 0, count: number = this.grok_random.getRandomArbitrary(100, 500); i < count; i++){
+        for(let i: number = this.songs.length, 
+            count: number = i + this.grok_random.getRandomArbitrary(1, 30); i < count; i++){
             let song: Song = new Song(
                 i,
                 `Song${i}`);
+            this.songs.push(song);
             songs.push(song);
         }
         return songs;
     }
 
-    CreateArtists(): Artist[]
+    private CreateArtistsForGroup(): Artist[]
     {
         let artists: Artist[] = [];
         for(
@@ -98,134 +103,65 @@ export class DB{
                 this.grok_random.getRandomEnum(Country),
                 this.grok_random.getRandomEnum(Award)
             );
+            this.artists.push(artist);
             artists.push(artist);
         }
         return artists;
     }
 
-    CreateAlbums(): Album[]
+    private CreateAlbumsForGroup(): Album[]
     {
         let albums: Album[] = [];
-        for(let i: number = 0, count: number = this.grok_random.getRandomArbitrary(50, 100); i < count; i++){
+        for(let i: number = this.albums.length, 
+            count: number = i + this.grok_random.getRandomArbitrary(1, 50);
+            i < count; i++)
+        {
+            let songs: Song[] = this.CreateSongsForAlbum();
+            let songsCount: number = songs.length;
             let album: Album = new Album(
                 i,
-                this.CreateDate(),
+                `AlbumName${i}`,
+                this.CreateDate(),               
                 this.grok_random.getRandomArbitrary(1000, 1000000),
-                this.grok_random.getRandomInt(10)
+                this.grok_random.getRandomInt(10),
+                songsCount,
+                this.grok_random.getRandomEnum(Award)
             )
+            album.img_src_src = i
+            this.createAlbumsAndSongsMapping(album, songs);
+            this.albums.push(album);
             albums.push(album);
         }
         return albums;
     }
 
-    createGroupsAndArtistsMapping(groups: Group[]): void{
-        for(let i = 0, count = groups.length; i < count; i++){
-            let artists = this.CreateArtists();
-            for(let artist of artists){
-                let dbGroupArtist = new DBGroupArtist(this.groups_artists_mapping.length,groups[i].id,artist.id);
-                this.artists.push(artist);
-                this.groups_artists_mapping.push(dbGroupArtist);
-            }
+    private createGroupAndArtistsMapping(group: Group, artists: Artist[]): void{
+        for(let artist of artists){
+            let dbGroupArtist = new DBGroupArtist(this.groups_artists_mapping.length,group.id,artist.id);
+            this.groups_artists_mapping.push(dbGroupArtist);
+        }        
+    }
+
+    private createGroupAndAlbumsMapping(group: Group, albums: Album[]): void{
+        for(let album of albums){
+            let dbGroupAlbum = new DBGroupAlbum(this.groups_albums_mapping.length, group.id,album.id);
+            this.groups_albums_mapping.push(dbGroupAlbum);
         }
     }
 
-    createGroupsAndAlbumsMapping(groups: Group[]): void{
-        for(let i = 0, count = groups.length; i < count; i++){
-            let albums = this.CreateAlbums();
-            for(let album of albums){
-                let dbGroupAlbum = new DBGroupAlbum(this.groups_albums_mapping.length, groups[i].id,album.id);
-                this.albums.push(album);
-                this.groups_albums_mapping.push(dbGroupAlbum);
-            }
+    private createAlbumsAndSongsMapping(album: Album, songs: Song[]): void{
+        for(let song of songs){
+            let dbAlbumSong = new DBAlbumSong(this.albums_songs_mapping.length, album.id, song.id)
+            this.albums_songs_mapping.push(dbAlbumSong);
         }
     }
 
-    createAlbumsAndSongsMapping(albums: Album[]): void{
-        for(let i = 0, count = albums.length; i < count; i++){
-            let songs = this.CreateSongs();
-            for(let song of songs){
-                let dbAlbumSong = new DBAlbumSong(this.albums_songs_mapping.length, albums[i].id,song.id)
-                this.songs.push(song);
-                this.albums_songs_mapping.push(dbAlbumSong);
-            }
-        }
+    private insertDataToDB<T>(filename: string, objs: T[]): void{
+        const jsondb = new JsonDB(new Config(filename, true, true));
+        for(let obj of objs){
+            jsondb.push(filename, objs);
+        } 
+        console.log(`${filename} created`);
     }
 }
 
-class Artist{
-    constructor(
-        private _id: number,
-        private roleInTheGroup: string,
-        private artistName: string,
-        private dateOfBirth: Date,
-        private countryOfBirth: Country,
-        private award: Award
-        ){}
-    get id(): number{
-        return this._id;
-    }
-}
-
-class Song{
-    constructor(
-        private _id: number, 
-        private name: string
-        ){}
-    get id(): number{
-        return this._id
-    }
-}
-
-class Album{
-    private zeroPad = (num: number, place: number) => String(num).padStart(place, '0');
-    constructor(
-        private _id: number, 
-        private release_date: Date,
-        private number_of_issued_copies: number,
-        private removal_backet: number,
-        private _img_src_src?: string
-        ){}
-    get id(){
-        return this._id;
-    }
-    set img_src_src(albumIndex: number){
-        this._img_src_src = `imgs/img${this.zeroPad(albumIndex, 4)}`
-    }
-}
-
-class Group{ 
-    constructor(
-        private _id: number,
-        private groupName: string,
-        private musicStyle: Style,                
-        private groupCreactionDate: Date,
-        private countryOfFoundation: Country
-        ){}   
-    get id(){
-        return this._id;
-    }
-}
-
-class DBGroupArtist{
-    constructor(
-        private id: number,
-        private groupIndex: number,
-        private artistsIndex: number
-        ){}
-}
-
-class DBGroupAlbum{
-    constructor(
-        private id: number,
-        private groupIndex: number,
-        private albumIndex: number
-        ){}
-}
-
-class DBAlbumSong{
-    constructor(
-        private id: number,
-        private albumIndex: number,
-        private songIndex: number
-        ){}
-}
