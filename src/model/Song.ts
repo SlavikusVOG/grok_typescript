@@ -3,13 +3,13 @@ import * as path from "path";
 export class Song{
     static readonly dbPath: string = path.resolve(__dirname, "songs");
     constructor(
-        private _id: string, 
-        private _name: string
+        private Id: string, 
+        private Name: string
         ){}
     get id(): string{
-        return this._id;
+        return this.Id;
     }
     get name(): string{
-        return this._name;
+        return this.Name;
     }
 }

@@ -5,16 +5,16 @@ import { Country } from "./countries.enum"
 export class Group{
     static readonly dbPath: string = path.resolve(__dirname, "groups");
     constructor(
-        private _id: string,
-        private _groupName: string,
+        private Id: string,
+        private GroupName: string,
         private musicStyle: Style,                
         private groupCreactionDate: Date,
         private countryOfFoundation: Country
         ){}   
     get id(){
-        return this._id;
+        return this.Id;
     }
     get name(){
-        return this._groupName;
+        return this.GroupName;
     }
 }

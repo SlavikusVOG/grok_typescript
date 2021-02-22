@@ -4,15 +4,15 @@ export class DBAlbumSong{
     static readonly dbPath: string = path.resolve(__dirname, "albumsong");
     constructor(
         private id: string,
-        private _albumId: string,
-        private _songId: string
+        private AlbumId: string,
+        private SongId: string
         ){}
 
     get albumId(){
-        return this._albumId;
+        return this.AlbumId;
     }
 
     get songId(){
-        return this._songId;
+        return this.SongId;
     }
 }
