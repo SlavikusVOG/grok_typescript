@@ -4,9 +4,9 @@ import FileUpload from 'express-fileupload';
 import Cors from 'cors';
 import Express from 'express';
 
-import { DB } from "../data/db";
-import { Grok_Random } from "../data/grok_random";
-import { AppData } from "../data/appdata";
+import { DB } from "./model/db";
+import { Grok_Random } from "./model/grok_random";
+import { AppData } from "./model/appdata";
 
 const app = Express();
 const PORT: number = 3000;
