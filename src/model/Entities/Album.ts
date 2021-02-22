@@ -5,7 +5,7 @@ export class Album{
     static readonly dbPath: string = path.resolve(__dirname, "albums");
     private zeroPad = (num: number, place: number) => String(num).padStart(place, '0');
     constructor(
-        private _id: number, 
+        private _id: string, 
         private _albumName: string,
         private release_date: Date,
         private number_of_issued_copies: number,

@@ -5,7 +5,7 @@ import { Country } from "./countries.enum"
 export class Group{
     static readonly dbPath: string = path.resolve(__dirname, "groups");
     constructor(
-        private _id: number,
+        private _id: string,
         private _groupName: string,
         private musicStyle: Style,                
         private groupCreactionDate: Date,

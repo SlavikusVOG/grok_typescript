@@ -13,6 +13,7 @@ import { Group } from "./Entities/Group";
 import { Album } from "./Entities/Album";
 import { Artist } from "./Entities/Artist";
 import { Song } from "./Entities/Song";
+import { v4 as uuidv4 } from "uuid";
 
 export class DB{
     private readonly dataDir: string = path.resolve(__dirname);
@@ -55,9 +56,9 @@ export class DB{
     private CreateData(): void
     {
         let groups : Group[] = [];
-        for(let i: number = this.groups.length, count: number = this.grok_random.getRandomInt(10); i < count; i++){
+        for(let i: number= this.groups.length, count: number = this.grok_random.getRandomInt(10); i < count; i++){
             let group: Group = new Group(
-                i,
+                uuidv4(),
                 `GroupName${i}`,
                 this.grok_random.getRandomEnum(Style),
                 this.CreateDate(),
@@ -78,7 +79,7 @@ export class DB{
         for(let i: number = this.songs.length, 
             count: number = i + this.grok_random.getRandomArbitrary(1, 30); i < count; i++){
             let song: Song = new Song(
-                i,
+                uuidv4(),
                 `Song${i}`);
             this.songs.push(song);
             songs.push(song);
@@ -96,7 +97,7 @@ export class DB{
             )
         {
             let artist: Artist = new Artist(
-                i,
+                uuidv4(),
                 `Role${i}`,
                 `ArtistName${i}`,
                 this.CreateDate(),
@@ -119,7 +120,7 @@ export class DB{
             let songs: Song[] = this.CreateSongsForAlbum();
             let songsCount: number = songs.length;
             let album: Album = new Album(
-                i,
+                uuidv4(),
                 `AlbumName${i}`,
                 this.CreateDate(),               
                 this.grok_random.getRandomArbitrary(1000, 1000000),
@@ -137,21 +138,21 @@ export class DB{
 
     private createGroupAndArtistsMapping(group: Group, artists: Artist[]): void{
         for(let artist of artists){
-            let dbGroupArtist = new DBGroupArtist(this.groups_artists_mapping.length,group.id,artist.id);
+            let dbGroupArtist = new DBGroupArtist(uuidv4(),group.id,artist.id);
             this.groups_artists_mapping.push(dbGroupArtist);
         }        
     }
 
     private createGroupAndAlbumsMapping(group: Group, albums: Album[]): void{
         for(let album of albums){
-            let dbGroupAlbum = new DBGroupAlbum(this.groups_albums_mapping.length, group.id,album.id);
+            let dbGroupAlbum = new DBGroupAlbum(uuidv4(), group.id,album.id);
             this.groups_albums_mapping.push(dbGroupAlbum);
         }
     }
 
     private createAlbumsAndSongsMapping(album: Album, songs: Song[]): void{
         for(let song of songs){
-            let dbAlbumSong = new DBAlbumSong(this.albums_songs_mapping.length, album.id, song.id)
+            let dbAlbumSong = new DBAlbumSong(uuidv4(), album.id, song.id)
             this.albums_songs_mapping.push(dbAlbumSong);
         }
     }

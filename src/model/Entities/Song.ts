@@ -3,10 +3,10 @@ import * as path from "path";
 export class Song{
     static readonly dbPath: string = path.resolve(__dirname, "songs");
     constructor(
-        private _id: number, 
+        private _id: string, 
         private _name: string
         ){}
-    get id(): number{
+    get id(): string{
         return this._id;
     }
     get name(): string{

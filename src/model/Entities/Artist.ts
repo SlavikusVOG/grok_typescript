@@ -5,14 +5,14 @@ import { Country } from "./countries.enum";
 export class Artist{
     static readonly dbPath: string = path.resolve(__dirname, "artists");
     constructor(
-        private _id: number,
+        private _id: string,
         private roleInTheGroup: string,
         private artistName: string,
         private dateOfBirth: Date,
         private countryOfBirth: Country,
         private award: Award
         ){}
-    get id(): number{
+    get id(): string{
         return this._id;
     }
 }

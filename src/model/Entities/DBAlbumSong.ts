@@ -3,9 +3,9 @@ import * as path from "path";
 export class DBAlbumSong{
     static readonly dbPath: string = path.resolve(__dirname, "albumsong");
     constructor(
-        private id: number,
-        private _albumId: number,
-        private _songId: number
+        private id: string,
+        private _albumId: string,
+        private _songId: string
         ){}
 
     get albumId(){

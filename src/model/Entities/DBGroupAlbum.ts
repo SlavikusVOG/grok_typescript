@@ -3,9 +3,9 @@ import * as path from "path";
 export class DBGroupAlbum{
     static readonly dbPath: string = path.resolve(__dirname, "dbgroupalbum");
     constructor(
-        private id: number,
-        private _groupId: number,
-        private _albumId: number
+        private id: string,
+        private _groupId: string,
+        private _albumId: string
         ){}
     
     get albumId(){
