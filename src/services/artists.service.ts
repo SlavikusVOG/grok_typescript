@@ -1,8 +1,8 @@
-import { DBController } from "../controllers/dbcontroller";
+import { DBController } from "../controllers/db.controller";
 import Express from "express";
 import * as path from "path";
 
-export class ArtistsData{
+export class ArtistsService{
     private readonly dataPath = path.resolve(__dirname) + '/artists.json';
     private readonly urlPath = '/artists';
     private readonly dbController: DBController;

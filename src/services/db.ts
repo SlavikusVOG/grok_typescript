@@ -1,18 +1,18 @@
 import { Grok_Random } from "./grok_random";
 import * as fs from "fs";
 import * as path from "path";
-import { Country } from "./Entities/countries.enum";
-import { Style } from "./Entities/styles.enum";
-import { Award } from "./Entities/awards.enum";
+import { Country } from "../model/countries.enum";
+import { Style } from "../model/styles.enum";
+import { Award } from "../model/awards.enum";
 import { JsonDB } from "node-json-db";
 import { Config } from "node-json-db/dist/lib/JsonDBConfig";
-import { DBAlbumSong } from "./Entities/DBAlbumSong";
-import { DBGroupAlbum } from "./Entities/DBGroupAlbum";
-import { DBGroupArtist } from "./Entities/DBGroupArtist";
-import { Group } from "./Entities/Group";
-import { Album } from "./Entities/Album";
-import { Artist } from "./Entities/Artist";
-import { Song } from "./Entities/Song";
+import { DBAlbumSong } from "../model/DBAlbumSong";
+import { DBGroupAlbum } from "../model/DBGroupAlbum";
+import { DBGroupArtist } from "../model/DBGroupArtist";
+import { Group } from "../model/Group";
+import { Album } from "../model/Album";
+import { Artist } from "../model/Artist";
+import { Song } from "../model/Song";
 import { v4 as uuidv4 } from "uuid";
 
 export class DB{
