@@ -1,30 +1,30 @@
 import Express from "express";
 
-import { GroupsData } from "./groupsdata";
-import { ArtistsData } from "./artistsdata";
-import { AlbumsData } from "./albumsdata";
-import { SongsData } from "./songsdata";
-import { MainData } from "./maindata";
-import { ListOfRecordsData } from "./listOfRecordsData"
-import { ServerUpload } from "../controllers/serverUpload"; 
+import { GroupsService } from "./groups.service";
+import { ArtistsService } from "./artists.service";
+import { AlbumsService } from "./albums.service";
+import { SongsService } from "./songs.service";
+import { MainService } from "./maindata";
+import { ListOfRecordsService } from "./listOfRecords.service"
+import { ServerUpload } from "../controllers/serverUpload.controller"; 
 
 export class AppData{
-    private groupsData: GroupsData;
-    private artistsData: ArtistsData;
-    private albumsData: AlbumsData;
-    private songsData: SongsData;
-    private mainData: MainData;
-    private listOfRecordsData: ListOfRecordsData;
+    private groupsData: GroupsService;
+    private artistsData: ArtistsService;
+    private albumsData: AlbumsService;
+    private songsData: SongsService;
+    private mainData: MainService;
+    private listOfRecordsData: ListOfRecordsService;
     private serverUpload: ServerUpload;
 
     constructor(app: Express.Express)
     {
-        this.groupsData = new GroupsData(app);
-        this.artistsData = new ArtistsData(app);
-        this.albumsData = new AlbumsData(app);
-        this.songsData = new SongsData(app);
-        this.mainData = new MainData(app);
-        this.listOfRecordsData = new ListOfRecordsData(app);
+        this.groupsData = new GroupsService(app);
+        this.artistsData = new ArtistsService(app);
+        this.albumsData = new AlbumsService(app);
+        this.songsData = new SongsService(app);
+        this.mainData = new MainService(app);
+        this.listOfRecordsData = new ListOfRecordsService(app);
         this.serverUpload = new ServerUpload(app);
     }
 }

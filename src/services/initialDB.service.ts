@@ -9,13 +9,14 @@ import { Config } from "node-json-db/dist/lib/JsonDBConfig";
 import { DBAlbumSong } from "../model/DBAlbumSong";
 import { DBGroupAlbum } from "../model/DBGroupAlbum";
 import { DBGroupArtist } from "../model/DBGroupArtist";
+import { ListOfRecords } from "../model/ListOfRecords";
 import { Group } from "../model/Group";
 import { Album } from "../model/Album";
 import { Artist } from "../model/Artist";
 import { Song } from "../model/Song";
 import { v4 as uuidv4 } from "uuid";
 
-export class DB{
+export class InitialDBService{
     private readonly dataDir: string = path.resolve(__dirname);
     private readonly grok_random: Grok_Random;
     private groups: Group[] = [];
@@ -25,6 +26,7 @@ export class DB{
     private groups_artists_mapping: DBGroupArtist[] = [];
     private groups_albums_mapping:DBGroupAlbum[] = [];
     private albums_songs_mapping: DBAlbumSong[] = [];
+    private listOfRecords: ListOfRecords[] = [];
     constructor(grok_random: Grok_Random){
         this.grok_random = grok_random;
     }
@@ -37,12 +39,13 @@ export class DB{
                 console.log(`generating files...`)
                 this.CreateData();
                 this.insertDataToDB<Group>(Group.dbPath, this.groups);
-                this.insertDataToDB<Album>(Album.dbPath, this.albums)
-                this.insertDataToDB<Artist>(Artist.dbPath, this.artists)
-                this.insertDataToDB<Song>(Song.dbPath, this.songs)
-                this.insertDataToDB<DBGroupAlbum>(DBGroupAlbum.dbPath, this.groups_albums_mapping)
-                this.insertDataToDB<DBGroupArtist>(DBGroupArtist.dbPath, this.groups_artists_mapping)
-                this.insertDataToDB<DBAlbumSong>(DBAlbumSong.dbPath, this.albums_songs_mapping)
+                this.insertDataToDB<Album>(Album.dbPath, this.albums);
+                this.insertDataToDB<Artist>(Artist.dbPath, this.artists);
+                this.insertDataToDB<Song>(Song.dbPath, this.songs);
+                this.insertDataToDB<DBGroupAlbum>(DBGroupAlbum.dbPath, this.groups_albums_mapping);
+                this.insertDataToDB<DBGroupArtist>(DBGroupArtist.dbPath, this.groups_artists_mapping);
+                this.insertDataToDB<DBAlbumSong>(DBAlbumSong.dbPath, this.albums_songs_mapping);
+                this.insertDataToDB<ListOfRecords>(ListOfRecords.dbPath, this.listOfRecords);
             }
         }catch(err){
             throw err;
@@ -155,6 +158,10 @@ export class DB{
             let dbAlbumSong = new DBAlbumSong(uuidv4(), album.id, song.id)
             this.albums_songs_mapping.push(dbAlbumSong);
         }
+    }
+
+    private createListOfRecords(albums: Album[]): void{
+
     }
 
     private insertDataToDB<T>(filename: string, objs: T[]): void{

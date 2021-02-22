@@ -4,9 +4,9 @@ import FileUpload from 'express-fileupload';
 import Cors from 'cors';
 import Express from 'express';
 
-import { DB } from "./src/model/db";
-import { Grok_Random } from "./src/model/grok_random";
-import { AppData } from "./src/model/appdata";
+import { InitialDBService } from "./src/services/initialDB.service";
+import { Grok_Random } from "./src/services/grok_random";
+import { AppData } from "./src/services/appdata";
 
 const app = Express();
 const PORT: number = 3000;
@@ -28,7 +28,7 @@ app.use(Express.static(path.resolve(__dirname, "../libs/webix/")));
 
 const grok_random = new Grok_Random(app);
 
-const db = new DB(grok_random);
+const db = new InitialDBService(grok_random);
 
 db.initdatafile();
 

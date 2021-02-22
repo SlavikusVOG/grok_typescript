@@ -1,10 +1,10 @@
 import * as path from "path";
 import { Award } from "./awards.enum";
+import { Entity } from "./Entity";
+import { IEntity } from "./IEntity";
 
-
-
-export class Album{
-    static readonly dbPath: string = path.resolve(__dirname, "albums");
+export class Album extends Entity<Album>{
+    static readonly dbPath: string = path.resolve(__dirname, "albums")
     private zeroPad = (num: number, place: number) => String(num).padStart(place, '0');
     constructor(
         private Id: string, 
@@ -14,8 +14,10 @@ export class Album{
         private removal_backet: number,
         private number_of_songs: number,
         private Awards?: Award[],
-        private Img_src_src?: string
-        ){}
+        private Img_src_src?: string,
+        ){
+            super(Album.dbPath);
+        }
     get id(){
         return this.Id;
     }
