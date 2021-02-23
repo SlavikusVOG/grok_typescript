@@ -23,8 +23,8 @@ app.use(FileUpload({
 app.use(BodyParser.json());
 app.use(BodyParser.urlencoded({extended: true}));
 app.use(Cors());
-app.use(Express.static(path.resolve(__dirname, "../public")));
-app.use(Express.static(path.resolve(__dirname, "../libs/webix/")));
+app.use(Express.static(path.resolve(__dirname, "views")));
+app.use(Express.static(path.resolve(__dirname, "libs/webix/")));
 
 const grok_random = new Grok_Random(app);
 

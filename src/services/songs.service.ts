@@ -3,7 +3,7 @@ import Express from "express";
 import * as path from "path";
 
 export class SongsService{
-    private readonly dataPath: string = path.resolve(__dirname) + '/song.json';
+    private readonly dataPath: string = path.resolve(__dirname, '..', 'model') + '/songs.json';
     private readonly urlPath: string = '/songs';
     private readonly controller: DBController;
     

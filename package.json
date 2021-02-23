@@ -10,7 +10,7 @@
     "buildwebpack": "webpack --config webpack.config.js",
     "buildserver": "tsc -p tsconfig.server.json",
     "build": "tsc -p tsconfig.server.json && webpack --config webpack.config.js",
-    "start": "node dist/app/app.js",
+    "start": "node dist/app.js",
     "cleandist": "rm -rf ./dist"
   },
   "repository": {

@@ -3,7 +3,7 @@ import Express from "express";
 import * as path from "path";
 
 export class GroupsService{
-    private readonly dataPath: string = path.resolve(__dirname) + '/groups.json';
+    private readonly dataPath: string = path.resolve(__dirname, '..', 'model') + '/groups.json';
     private readonly urlPath: string = '/groups';
     private readonly controller: DBController;
     

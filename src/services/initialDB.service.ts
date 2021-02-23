@@ -45,7 +45,6 @@ export class InitialDBService{
                 this.insertDataToDB<DBGroupAlbum>(DBGroupAlbum.dbPath, this.groups_albums_mapping);
                 this.insertDataToDB<DBGroupArtist>(DBGroupArtist.dbPath, this.groups_artists_mapping);
                 this.insertDataToDB<DBAlbumSong>(DBAlbumSong.dbPath, this.albums_songs_mapping);
-                this.insertDataToDB<ListOfRecords>(ListOfRecords.dbPath, this.listOfRecords);
             }
         }catch(err){
             throw err;
@@ -160,16 +159,24 @@ export class InitialDBService{
         }
     }
 
-    private createListOfRecords(albums: Album[]): void{
-
-    }
-
     private insertDataToDB<T>(filename: string, objs: T[]): void{
         const jsondb = new JsonDB(new Config(filename, true, true));
+        let insertData: T[] = [];
         for(let obj of objs){
-            jsondb.push(filename, objs);
+            insertData.push(this.getObjectWithoutDBPath(obj, ['dbPath']))
         } 
+        jsondb.push(filename, insertData);
         console.log(`${filename} created`);
+    }
+
+    private getObjectWithoutDBPath<T>(obj: T, keys: string[]): any{
+        let target: any = {};
+        for (var i in obj) {
+            if (keys.indexOf(i) >= 0) continue;
+            if (!Object.prototype.hasOwnProperty.call(obj, i)) continue;
+            target[i] = obj[i];
+        }
+        return target;
     }
 }
 
