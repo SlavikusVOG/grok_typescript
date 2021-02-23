@@ -24,6 +24,7 @@
   "author": "Viacheslav Olishevko",
   "license": "ISC",
   "devDependencies": {
+    "@types/uuid": "^8.3.0",
     "copy-webpack-plugin": "^7.0.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",

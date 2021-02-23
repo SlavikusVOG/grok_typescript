@@ -5,7 +5,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 module.exports = [
     {
         mode: 'development',
-        entry: './public/clientapp.ts',
+        entry: './src/views/clientapp.ts',
         plugins:[
             new HTMLWebpackPlugin(),
             new CopyWebpackPlugin(
@@ -19,7 +19,7 @@ module.exports = [
         ],
         resolve: {
             extensions: ['.ts', '.js'],
-            modules: ["./public", "node_modules", "./libs"]
+            modules: ["./src/views", "node_modules", "./libs"]
         },
         output: {
             path: path.resolve(__dirname, 'dist'),
