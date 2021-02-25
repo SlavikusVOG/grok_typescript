@@ -19,7 +19,10 @@ module.exports = [
         ],
         resolve: {
             extensions: ['.ts', '.js'],
-            modules: ["./src/views", "node_modules", "./libs"]
+            modules: ["src/views", "node_modules", "libs"],
+            // alias: {
+            //     webix: path.resolve(__dirname, '../../libs/webix/types/webix'),
+            // },
         },
         output: {
             path: path.resolve(__dirname, 'dist/views'),
